@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Royal Loom | Elevate your home with best items</title>
+    <meta name="description" content="Elevate your home with best items — browse rugs and tables, customize your order, and checkout securely." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <nav class="nav container">
+        <a href="#" class="brand">
+          <span class="logo-mark">RL</span>
+          <span class="brand-text">Royal Loom</span>
+        </a>
+        <div class="nav-links">
+          <a href="#products">Rugs</a>
+          <a href="#customize">Custom Order</a>
+          <a href="#cart">Cart <span id="cart-count" class="badge">0</span></a>
+        </div>
+        <button id="view-toggle" class="btn btn-secondary" style="margin-left:12px">Public view</button>
+      </nav>
+
+      <div class="hero-content container">
+        <div>
+          <p class="eyebrow">Luxury custom rugs • handcrafted design</p>
+          <h1>Custom rugs made to fit your space perfectly</h1>
+          <p class="hero-text">
+            Create one-of-a-kind rugs with your choice of size, color, texture, and finish. Perfect for living rooms, bedrooms, and premium interiors.
+          </p>
+          <div class="hero-actions">
+            <a href="#products" class="btn btn-primary">Browse rugs</a>
+            <a href="#customize" class="btn btn-secondary">Start custom order</a>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div class="hero-card-top">
+            <span class="chip">New arrivals</span>
+            <span class="chip alt">Made to order</span>
+          </div>
+          <h3>Custom rug + table bundles</h3>
+          <p>Choose colors, sizes, finishes, and delivery preferences in one seamless experience.</p>
+          <ul>
+            <li>Premium handwoven craftsmanship</li>
+            <li>Flexible custom dimensions</li>
+            <li>Fast consultation & delivery</li>
+          </ul>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section id="products" class="container section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Featured pieces</p>
+            <h2>Signature custom rugs</h2>
+          </div>
+          <p>Choose from premium designs, then customize size, texture, and color to match your home.</p>
+        </div>
+
+        <div id="rugs-grid" class="products-grid"></div>
+      </section>
+
+      <section id="admin" class="section container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Admin</p>
+            <h2>Add a product (use this to upload your table images)</h2>
+          </div>
+          <p class="muted">Upload a photo, add a title, price and description — the product will appear in the storefront.</p>
+        </div>
+
+        <div class="card form-card">
+          <form id="admin-form">
+            <div class="field-group">
+              <label for="admin-image">Product image</label>
+              <input id="admin-image" name="image" type="file" accept="image/*" required />
+            </div>
+            <div class="field-group">
+              <label for="admin-name">Product name</label>
+              <input id="admin-name" name="name" placeholder="My Pink Wagon Table" required />
+            </div>
+            <div class="field-group">
+              <label for="admin-category">Category</label>
+              <select id="admin-category" name="category">
+                <option>Rug</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label for="admin-price">Price (USD)</label>
+              <input id="admin-price" name="price" type="number" min="0" placeholder="1500" required />
+            </div>
+            <div class="field-group">
+              <label for="admin-desc">Description</label>
+              <textarea id="admin-desc" name="description" rows="3" placeholder="Short description"></textarea>
+            </div>
+            <div style="display:flex;gap:.6rem;">
+              <button type="submit" class="btn btn-primary">Add product</button>
+              <button type="button" id="admin-reset" class="btn btn-secondary">Reset</button>
+              <button type="button" id="admin-clean" class="btn btn-secondary">Keep only uploaded products</button>
+            </div>
+          </form>
+          <p id="admin-message" class="message" aria-live="polite"></p>
+        </div>
+
+        <div class="card form-card" style="margin-top:1rem;">
+          <h3>Admin products</h3>
+          <p class="muted">New uploads are private by default. Use the controls to publish them when ready.</p>
+          <div id="admin-products" style="display:grid;gap:.6rem;margin-top:.6rem;"></div>
+        </div>
+        </div>
+      </section>
+
+      <section id="customize" class="section custom-section">
+        <div class="container custom-grid">
+          <div class="custom-copy">
+            <p class="eyebrow">Custom design request</p>
+            <h2>Tell us how you want it made.</h2>
+            <p>
+              Share your preferred size, palette, material, and room details. We will turn your idea into a tailored product request.
+            </p>
+          </div>
+
+          <form id="customize-form" class="card form-card">
+            <div class="field-group">
+              <label for="customer-name">Full name</label>
+              <input id="customer-name" name="customerName" placeholder="Amina Yusuf" required />
+            </div>
+            <div class="field-group">
+              <label for="customer-email">Email</label>
+              <input id="customer-email" name="customerEmail" type="email" placeholder="you@example.com" required />
+            </div>
+            <div class="field-group">
+              <label for="project-type">Project type</label>
+              <select id="project-type" name="projectType" required>
+                <option value="">Select one</option>
+                <option value="Rug">Custom rug</option>
+                <option value="Table">Custom table</option>
+                <option value="Bundle">Rug + table bundle</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label for="design-notes">Design notes</label>
+              <textarea id="design-notes" name="designNotes" rows="4" placeholder="Desired dimensions, colors, material, room, and style details..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary wide">Add custom request to cart</button>
+          </form>
+        </div>
+      </section>
+
+      <section id="cart" class="container section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Your selection</p>
+            <h2>Review your cart</h2>
+          </div>
+          <p>Everything you selected is ready for checkout.</p>
+        </div>
+
+        <div class="cart-layout">
+          <div id="cart-items" class="cart-items"></div>
+
+          <div class="card checkout-card">
+            <h3>Checkout</h3>
+            <form id="checkout-form">
+              <div class="field-group">
+                <label for="delivery-name">Recipient name</label>
+                <input id="delivery-name" name="deliveryName" required />
+              </div>
+              <div class="field-group">
+                <label for="delivery-address">Address</label>
+                <input id="delivery-address" name="deliveryAddress" required />
+              </div>
+              <div class="field-group">
+                <label for="payment-method">Payment gateway</label>
+                <select id="payment-method" name="paymentMethod" required>
+                  <option value="">Choose a method</option>
+                  <option value="Card">Credit / Debit Card</option>
+                  <option value="PayPal">PayPal</option>
+                  <option value="Bank">Bank Transfer</option>
+                  <option value="Cash">Cash on Delivery</option>
+                </select>
+              </div>
+              <div class="field-group" id="card-number-group">
+                <label for="card-number">Card number</label>
+                <input id="card-number" name="cardNumber" inputmode="numeric" placeholder="4242 4242 4242 4242" />
+              </div>
+              <div class="field-group" id="card-expiry-group">
+                <label for="card-expiry">Expiry</label>
+                <input id="card-expiry" name="cardExpiry" placeholder="MM/YY" />
+              </div>
+              <button type="submit" id="place-order-button" class="btn btn-primary wide">Place order</button>
+            </form>
+            <div id="paypal-button-container" style="margin-top:1rem;"></div>
+            <p id="checkout-message" class="message" aria-live="polite"></p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="modal" class="modal hidden" aria-hidden="true">
+      <div class="modal-content card">
+        <button type="button" id="close-modal" class="close-btn" aria-label="Close customization form">×</button>
+        <h3>Customize your selection</h3>
+        <form id="modal-form">
+          <input type="hidden" id="selected-product-id" />
+          <div class="field-group">
+            <label for="modal-size">Preferred size</label>
+            <input id="modal-size" name="size" placeholder="e.g. 8x10 ft" required />
+          </div>
+          <div class="field-group">
+            <label for="modal-color">Preferred color</label>
+            <input id="modal-color" name="color" placeholder="Terracotta, Ivory, Walnut..." required />
+          </div>
+          <div class="field-group">
+            <label for="modal-material">Material / finish</label>
+            <input id="modal-material" name="material" placeholder="Silk, wool, lacquered oak..." required />
+          </div>
+          <div class="field-group">
+            <label for="modal-notes">Extra notes</label>
+            <textarea id="modal-notes" name="notes" rows="4" placeholder="Add any important details..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary wide">Add customized item</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
