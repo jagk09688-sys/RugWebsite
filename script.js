@@ -117,6 +117,9 @@ function saveProducts() {
 const productsSection = document.getElementById('products');
 const rugsGrid = document.getElementById('rugs-grid');
 const tablesGrid = document.getElementById('tables-grid');
+const productSearchInput = document.getElementById('product-search');
+const productFilterButtons = document.querySelectorAll('.filter-btn');
+const productsSummary = document.getElementById('products-summary');
 const cartItems = document.getElementById('cart-items');
 const cartCount = document.getElementById('cart-count');
 const customizeForm = document.getElementById('customize-form');
@@ -172,14 +175,36 @@ function updateCheckoutVisibility() {
   }
 }
 
-function renderProducts() {
-  // Render differently depending on admin/public view
-  const adminMode = sessionStorage.getItem('adminMode');
-  const showAll = adminMode === null || adminMode === 'true';
-  const visibleProducts = showAll ? products : products.filter(p => p.visible);
+function getActiveProductFilter() {
+  const activeFilterButton = document.querySelector('.filter-btn.active');
+  return activeFilterButton ? activeFilterButton.dataset.filter || 'all' : 'all';
+}
 
-  const rugs = visibleProducts.filter(item => item.category === 'Rug');
-  const tables = visibleProducts.filter(item => item.category === 'Table');
+function getFilteredProducts() {
+  const adminMode = sessionStorage.getItem('adminMode') === 'true';
+  const sourceProducts = adminMode ? products : products.filter((p) => p.visible);
+  const activeFilter = getActiveProductFilter();
+  const searchTerm = (productSearchInput?.value || '').trim().toLowerCase();
+
+  return sourceProducts.filter((item) => {
+    const matchesFilter = activeFilter === 'all' || item.category === activeFilter;
+    const haystack = `${item.name} ${item.description} ${item.category}`.toLowerCase();
+    const matchesSearch = !searchTerm || haystack.includes(searchTerm);
+    return matchesFilter && matchesSearch;
+  });
+}
+
+function renderProducts() {
+  const filteredProducts = getFilteredProducts();
+  const rugs = filteredProducts.filter((item) => item.category === 'Rug');
+  const tables = filteredProducts.filter((item) => item.category === 'Table');
+
+  if (productsSummary) {
+    const totalProducts = filteredProducts.length;
+    productsSummary.textContent = totalProducts
+      ? `Showing ${totalProducts} available piece${totalProducts === 1 ? '' : 's'}`
+      : 'No pieces match your current search';
+  }
 
   if (rugsGrid) {
     rugsGrid.innerHTML = rugs.length
@@ -219,23 +244,29 @@ const viewToggle = document.getElementById('view-toggle');
 const adminSection = document.getElementById('admin');
 
 function updateAdminVisibility() {
-  const adminMode = sessionStorage.getItem('adminMode');
-  const isAdmin = adminMode === null || adminMode === 'true';
-  if (adminSection) adminSection.style.display = isAdmin ? 'block' : 'none';
-  if (viewToggle) viewToggle.textContent = isAdmin ? 'Public view' : 'Admin view';
+  const adminMode = sessionStorage.getItem('adminMode') === 'true';
+  if (adminSection) adminSection.style.display = adminMode ? 'block' : 'none';
+  if (viewToggle) viewToggle.textContent = adminMode ? 'Public view' : 'Admin view';
 }
 
 if (viewToggle) {
-  // default to admin view when not set
-  if (sessionStorage.getItem('adminMode') === null) sessionStorage.setItem('adminMode', 'true');
+  if (sessionStorage.getItem('adminMode') === null) sessionStorage.setItem('adminMode', 'false');
   viewToggle.addEventListener('click', () => {
-    const current = sessionStorage.getItem('adminMode');
-    const next = current === 'true' ? 'false' : 'true';
+    const current = sessionStorage.getItem('adminMode') === 'true';
+    const next = current ? 'false' : 'true';
     sessionStorage.setItem('adminMode', next);
     updateAdminVisibility();
     renderProducts();
   });
 }
+
+productSearchInput?.addEventListener('input', renderProducts);
+productFilterButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    productFilterButtons.forEach((item) => item.classList.toggle('active', item === button));
+    renderProducts();
+  });
+});
 
 
 adminForm && adminForm.addEventListener('submit', (event) => {
